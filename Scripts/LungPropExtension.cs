@@ -2,7 +2,7 @@
 using System.Collections;
 using UnityEngine;
 
-namespace Interior
+namespace Interior.Scripts
 {
     public class LungPropExtension : LungProp
     {
@@ -41,7 +41,7 @@ namespace Interior
             isLungDocked = true;
             isLungPowered = true;
 
-            radMechEnemyType = LungPropExtension.oldBirdEnemyType;
+            radMechEnemyType = oldBirdEnemyType;
 
             if (apparatusAudio != null)
             {

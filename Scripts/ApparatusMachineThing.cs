@@ -2,7 +2,7 @@
 using Unity.Netcode;
 using UnityEngine;
 
-namespace Interior
+namespace Interior.Scripts
 {
     public class ApparatusMachineThing : NetworkBehaviour
     {

@@ -1,6 +1,7 @@
 ﻿using BepInEx;
 using BepInEx.Logging;
 using HarmonyLib;
+using Interior.Patches;
 using System.Reflection;
 using UnityEngine;
 
@@ -11,7 +12,7 @@ namespace Interior
     {
         public const string modGUID = "mborsh.HabitatIntreior";
         public const string modName = "HabitatInterior";
-        public const string modVersion = "1.0.0";
+        public const string modVersion = "1.1.0";
 
         public static Plugin Instance = null!;
         internal static ManualLogSource mls = null!;
@@ -25,7 +26,7 @@ namespace Interior
             mls = Logger;
 
             NetcodePatcher();
-            harmony.PatchAll(typeof(Patches));
+            harmony.PatchAll(typeof(Centipede));
             mls.LogInfo($"{modName} Interior Plugin loaded!");
         }
         private static void NetcodePatcher()
