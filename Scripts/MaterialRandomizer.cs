@@ -1,7 +1,5 @@
 ﻿using Interior.Helpers;
-using System;
 using System.Collections.Generic;
-using System.Text;
 using UnityEngine;
 
 namespace Interior.Scripts
@@ -17,7 +15,7 @@ namespace Interior.Scripts
 
             if (meshRenderer == null) meshRenderer = GetComponent<MeshRenderer>();
 
-            meshRenderer.material = materials[Randomizer.Instance.rnd.Next(materials.Count + 1)];
+            meshRenderer.material = materials[Randomizer.Instance.rnd.Next(materials.Count)];
         }
     }
 }
