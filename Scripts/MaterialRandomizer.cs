@@ -15,7 +15,7 @@ namespace Interior.Scripts
 
             if (meshRenderer == null) meshRenderer = GetComponent<MeshRenderer>();
 
-            meshRenderer.material = materials[Randomizer.Instance.rnd.Next(materials.Count)];
+            meshRenderer.sharedMaterial = materials[Randomizer.Instance.rnd.Next(materials.Count)];
         }
     }
 }

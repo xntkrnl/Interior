@@ -5,7 +5,8 @@ using UnityEngine;
 
 namespace Interior.Patches
 {
-    internal class Centipede
+    //funny thing: they will stop render at max distance.
+    internal class CentipedePatch
     {
         [HarmonyTranspiler, HarmonyPatch(typeof(CentipedeAI), nameof(CentipedeAI.RaycastToCeiling))]
         static IEnumerable<CodeInstruction> RaycastToCeilingPatch(IEnumerable<CodeInstruction> instructions)

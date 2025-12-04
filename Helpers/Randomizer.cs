@@ -4,6 +4,7 @@ namespace Interior.Helpers
 {
     internal class Randomizer
     {
+        //todo: add checks if player is host
         internal Random rnd {  get; private set; }
         internal static Randomizer? Instance
         {

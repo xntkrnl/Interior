@@ -13,7 +13,7 @@ namespace Interior.Scripts
             {
                 if (!doorway || !doorway.connectedDoorway) continue;
 
-                if (doorway.tile.placement.tileSet == doorway.connectedDoorway.tile.placement.tileSet)
+                if (doorway.tile.placement.tileSet == doorway.connectedDoorway.tile.placement.tileSet || !Config.enableForceField.Value)
                     Destroy(doorway.ConnectorSceneObjects[0]);
             }
         }

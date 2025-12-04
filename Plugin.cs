@@ -26,7 +26,7 @@ namespace Interior
             mls = Logger;
 
             NetcodePatcher();
-            harmony.PatchAll(typeof(Centipede));
+            harmony.PatchAll(typeof(CentipedePatch));
             mls.LogInfo($"{modName} Interior Plugin loaded!");
         }
         private static void NetcodePatcher()
