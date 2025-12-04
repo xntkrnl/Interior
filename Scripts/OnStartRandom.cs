@@ -13,7 +13,8 @@ namespace Interior.Scripts
 
         void Start()
         {
-             if (Randomizer.Instance.rnd.Next(100) + 1 <= onStartChance)
+            ServerRandomizer.Instance.NextServerRpc(100, out int result);
+            if (result + 1 <= onStartChance)
                 onStart.Invoke();
         }
     }

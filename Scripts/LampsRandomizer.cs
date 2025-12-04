@@ -13,7 +13,8 @@ namespace Interior.Scripts
         {
             if (lampAnimator == null) return;
 
-            if (Randomizer.Instance.rnd.Next(100) + 1 <= onStartChance)
+            ServerRandomizer.Instance.NextServerRpc(100, out int result);
+            if (result + 1 <= onStartChance)
             {
                 lampAnimator.SetBool("on", false);
                 Plugin.mls.LogInfo($"Disabling lamp: {lampAnimator.gameObject.name}, with chance: {onStartChance} at {lampAnimator.transform.position}");
