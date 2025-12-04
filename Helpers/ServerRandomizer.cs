@@ -26,17 +26,5 @@ namespace Interior.Helpers
 
             private set;
         }
-
-        [ServerRpc(RequireOwnership = false)]
-        internal void NextServerRpc(int maxValue, out int result) //i hope it works
-        {
-            result = rnd.Next(maxValue);
-        }
-
-        [ClientRpc]
-        private void NextClientRpc()
-        {
-
-        }
     }
 }
