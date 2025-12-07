@@ -7,7 +7,7 @@ namespace Interior
 {
     internal class Config
     {
-        internal static ConfigEntry<float> lampChance; //not codded rn, future use
+        internal static ConfigEntry<float> lampChance;
         internal static ConfigEntry<bool> enableForceField;
         internal static ConfigEntry<bool> enableApparatusMachineSequence;
         internal static ConfigEntry<bool> enableThreatScannerDoors; //future use
