@@ -16,6 +16,7 @@ namespace Interior
         {
             enableForceField = cfg.Bind("HabitatInterior", "Enable force fields", true);
             enableApparatusMachineSequence = cfg.Bind("HabitatInterior", "Enable Apparatus Machine Levers", true);
+            lampChance = cfg.Bind("HabitatInterior", "Chance for lamp to be turned off from the start", 25f);
         }
     }
 }
