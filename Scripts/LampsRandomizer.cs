@@ -1,24 +1,32 @@
-﻿using Interior.Helpers;
+﻿using Dawn.Utils;
+using Discord;
+using Interior.Helpers;
+using Unity.Netcode;
 using UnityEngine;
 
 namespace Interior.Scripts
 {
-    internal class LampsRandomizer : MonoBehaviour
+    internal class LampsRandomizer : NetworkBehaviour
     {
         public Animator? lampAnimator;
         [Range(0f, 100f)]
         public float onStartChance;
+        private NetworkVariable<bool> on = new NetworkVariable<bool>(true);
 
-        void Start()
+        public override void OnNetworkSpawn()
         {
+            base.OnNetworkSpawn();
+
             if (lampAnimator == null) return;
 
-            ServerRandomizer.Instance.NextServerRpc(100, out int result);
-            if (result + 1 <= onStartChance)
+            if (NetworkManager.IsServer)
             {
-                lampAnimator.SetBool("on", false);
-                Plugin.mls.LogInfo($"Disabling lamp: {lampAnimator.gameObject.name}, with chance: {onStartChance} at {lampAnimator.transform.position}");
+                System.Random random = new System.Random();
+                on.Value = random.NextBool();
             }
+
+            lampAnimator.SetBool("on", on.Value);
+            Plugin.mls.LogInfo($"Lamp: {lampAnimator.gameObject.name}, state: {on.Value}, position: {lampAnimator.transform.position}");
         }
     }
 }

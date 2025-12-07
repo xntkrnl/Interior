@@ -1,33 +1,36 @@
-﻿using Dawn;
-using Interior.Helpers;
-using System;
-using System.Collections.Generic;
+﻿using System;
+using Unity.Netcode;
 using UnityEngine;
 
 namespace Interior.Scripts
 {
 
     [Serializable]
-    public class RendererWithMaterials
+    internal class Materials
     {
-        public Material[] materials;
-        public Renderer renderer;
+        internal Material[] materials;
     }
 
-    public class MaterialRandomizer : MonoBehaviour
+    internal class MaterialRandomizer : NetworkBehaviour
     {
         [SerializeField]
-        public RendererWithMaterials[] renderersAndMaterials;
-        public MeshRenderer? meshRenderer;
+        internal Materials[] materials;
+        internal MeshRenderer? meshRenderer;
+        private NetworkVariable<int> current = new NetworkVariable<int>(0, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Server);
 
-        void Start()
+        public override void OnNetworkSpawn()
         {
-            if (renderersAndMaterials.Length == 0) return;
+            base.OnNetworkSpawn();
 
-            if (meshRenderer == null) meshRenderer = GetComponent<MeshRenderer>();
+            if (materials.Length == 0 || meshRenderer == null) return;
 
-            ServerRandomizer.Instance.NextServerRpc(renderersAndMaterials.Length, out int result);
-            meshRenderer.sharedMaterials = renderersAndMaterials[result].materials;
+            if (IsServer)
+            {
+                System.Random random = new System.Random();
+                current.Value = random.Next(materials.Length);
+            }
+
+            meshRenderer.sharedMaterials = materials[current.Value].materials;
         }
     }
 }

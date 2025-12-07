@@ -5,6 +5,7 @@ using Unity.Networking.QoS;
 
 namespace Interior.Helpers
 {
+    [Obsolete]
     internal class ServerRandomizer : NetworkBehaviour
     {
         private Random rnd;
