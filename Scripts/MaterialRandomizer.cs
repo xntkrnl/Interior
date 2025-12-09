@@ -6,16 +6,15 @@ namespace Interior.Scripts
 {
 
     [Serializable]
-    internal class Materials
+    public class Materials
     {
-        internal Material[] materials;
+        public Material[] materials;
     }
 
     internal class MaterialRandomizer : NetworkBehaviour
     {
-        [SerializeField]
-        internal Materials[] materials;
-        internal MeshRenderer? meshRenderer;
+        [SerializeField] public Materials[] materials;
+        public MeshRenderer? meshRenderer;
         private NetworkVariable<int> current = new NetworkVariable<int>(0, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Server);
 
         public override void OnNetworkSpawn()
