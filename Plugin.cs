@@ -1,5 +1,8 @@
 ﻿using BepInEx;
+using BepInEx.Configuration;
 using BepInEx.Logging;
+using Dawn.Utils;
+using Dusk;
 using HarmonyLib;
 using Interior.Patches;
 using System.Reflection;
@@ -11,12 +14,13 @@ namespace Interior
     internal class Plugin : BaseUnityPlugin
     {
         public const string modGUID = "mborsh.HabitatIntreior";
-        public const string modName = "HabitatInterior";
-        public const string modVersion = "1.1.0";
+        public const string modName = "Habitat Interior";
+        public const string modVersion = "1.2.0";
 
         public static Plugin Instance = null!;
         internal static ManualLogSource mls = null!;
         internal static readonly Harmony harmony = new Harmony(modGUID);
+        internal static DuskMod mod;
 
         private void Awake()
         {
@@ -24,10 +28,13 @@ namespace Interior
                 Instance = this;
 
             mls = Logger;
+            AssetBundle mainBundle = AssetBundleUtils.LoadBundle(Assembly.GetExecutingAssembly(), "habitat_contentcontainer");
+            mod = DuskMod.RegisterMod(this, mainBundle);
+            mod.RegisterContentHandlers();
 
             NetcodePatcher();
             harmony.PatchAll(typeof(CentipedePatch));
-            mls.LogInfo($"{modName} Interior Plugin loaded!");
+            mls.LogInfo($"{modName} Plugin loaded!");
         }
         private static void NetcodePatcher()
         {

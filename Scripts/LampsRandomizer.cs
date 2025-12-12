@@ -16,11 +16,11 @@ namespace Interior.Scripts
         {
             base.OnNetworkSpawn();
 
+            chance = HabitatConfig.Instance.habitatAssets.GetConfig<float>("Lamp disable chance").Value;
             if (lampAnimator == null || chance <= 0) return;
 
             if (NetworkManager.IsServer)
             {
-                chance = Config.lampChance.Value;
                 System.Random random = new System.Random();
                 on.Value = random.NextFloat(0, 100) <= chance;
             }

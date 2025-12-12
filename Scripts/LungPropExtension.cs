@@ -40,7 +40,7 @@ namespace Interior.Scripts
             grabbable = false;
             grabbableToEnemies = false;
 
-            if (NetworkManager.IsHost && Config.enableApparatusMachineSequence.Value) ApparatusMachineThing.Instance.SendLeverOpenClientRpc();
+            //if (NetworkManager.IsHost && HabitatConfig.enableApparatusMachineSequence.Value) ApparatusMachineThing.Instance.SendLeverOpenClientRpc();
 
             isLungDocked = true;
             isLungPowered = true;
