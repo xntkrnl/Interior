@@ -1,4 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using DunGen;
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 using Unity.Netcode;
 using UnityEngine;
 
@@ -16,6 +19,52 @@ namespace Interior.Scripts
         {
             base.OnNetworkSpawn();
             Instance = this;
+
+            if (NetworkManager.IsHost)
+                StartCoroutine(WaitUntilLanding());
+        }
+
+        IEnumerator WaitUntilLanding()
+        {
+            yield return new WaitUntil(() => StartOfRound.Instance.inShipPhase == true);
+
+            lungProp = GameObject.FindObjectsOfType<LungPropExtension>().FirstOrDefault(lp => Vector3.Distance(this.transform.position, lp.transform.position) <= 20f);
+
+            if (!lungProp)
+            {
+                Plugin.mls.LogError("Something wrong with apparatus machine/apparatus script!!! Report that to creator of this interior please.");
+                Plugin.mls.LogError("Host was unable to find new apparatus");
+                yield break;
+            }
+
+            SendLungPropClientRpc(lungProp);
+        }
+
+        [ClientRpc]
+        private void SendLungPropClientRpc(NetworkBehaviourReference lpr)
+        {
+            if (!lpr.TryGet(out LungPropExtension lungPropFromServer))
+            {
+                Plugin.mls.LogError("Something wrong with apparatus machine/apparatus script!!! Report that to creator of this interior please.");
+                Plugin.mls.LogError("Something went wrong on recieving lung prop on ClientRpc");
+                return;
+            }
+
+            lungProp = lungPropFromServer;
+
+            lungProp.grabbable = false;
+            lungProp.grabbableToEnemies = false;
+
+            //if (NetworkManager.IsHost && HabitatConfig.enableApparatusMachineSequence.Value) ApparatusMachineThing.Instance.SendLeverOpenClientRpc();
+
+            lungProp.isLungDocked = true;
+            lungProp.isLungPowered = true;
+
+            if (lungProp.apparatusAudio != null)
+            {
+                lungProp.apparatusAudio.loop = true;
+                lungProp.apparatusAudio.Play();
+            }
         }
 
         public override void OnNetworkDespawn()
