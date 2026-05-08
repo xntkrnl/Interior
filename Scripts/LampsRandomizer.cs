@@ -1,5 +1,6 @@
 ﻿using Dawn.Utils;
-using Discord;
+using Interior.Patches;
+using System.Collections.Generic;
 using Unity.Netcode;
 using UnityEngine;
 
@@ -11,22 +12,31 @@ namespace Interior.Scripts
         public Animator? lampAnimator;
         private float chance;
         private NetworkVariable<bool> on = new NetworkVariable<bool>(true);
+        internal static List<LampsRandomizer> lamps = new();
 
-        public override void OnNetworkSpawn()
+        private void Awake() => lamps.Add(this);
+
+        public void SetLampState()
         {
-            base.OnNetworkSpawn();
+            //base.OnNetworkSpawn();
 
-            chance = HabitatConfig.Instance.habitatAssets.GetConfig<float>("Lamp disable chance").Value;
+            chance = HabitatContentHandler.Instance.habitatAssets.GetConfig<float>("Lamp disable chance").Value;
             if (lampAnimator == null || chance <= 0) return;
 
             if (NetworkManager.IsServer)
             {
                 System.Random random = new System.Random();
-                on.Value = random.NextFloat(0, 100) <= chance;
+                on.Value = random.NextFloat(0, 100) > chance;
             }
 
             lampAnimator.SetBool("on", on.Value);
             if (!on.Value) Plugin.mls.LogDebug($"Lamp: {lampAnimator.gameObject.name}, state: {on.Value}, position: {lampAnimator.transform.position}");
         }
+
+        public override void OnDestroy() => lamps.Remove(this);
+        //{
+            //base.OnDestroy();
+            //RoundManagerPatch.OnAfterSetPowerOffAtStart.RemoveListener(SetLampState);
+        //}
     }
 }
