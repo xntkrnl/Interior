@@ -11,7 +11,7 @@ namespace Interior.Scripts
         public float movementHinderance = 1.6f;
         private bool isSinkingLocalPlayer;
         public int audioClipIndex;
-        public Collider waterCollider;
+        public Collider? waterCollider;
 
         private void OnTriggerStay(Collider other)
         {
@@ -38,12 +38,10 @@ namespace Interior.Scripts
             }
             else if (CheckConditions(player))
             {
-                Plugin.mls.LogInfo("Set local player to sinking in custom water!");
+                Plugin.mls.LogInfo("Set local player sinking in custom water to true!");
                 isSinkingLocalPlayer = true;
-                player.sourcesCausingSinking++;
                 player.isMovementHindered++;
                 player.hinderedMultiplier *= movementHinderance;
-                player.sinkingSpeedMultiplier = 0;
             }
         }
 
@@ -60,18 +58,18 @@ namespace Interior.Scripts
 
         public bool CheckConditions(PlayerControllerB player)
         {
-            if (player.inSpecialInteractAnimation || player.inAnimationWithEnemy || player.isClimbingLadder) return false;
-            if (player.physicsParent) return false;
+            //if (player.inSpecialInteractAnimation || player.inAnimationWithEnemy || player.isClimbingLadder) return false;
+            //if (player.physicsParent) return false;
             if (player.isInHangarShipRoom || player.isInElevator) return false;
-            if (!player.thisController.isGrounded) return false;
+            //if (!player.thisController.isGrounded) return false;
 
             return true;
         }
 
         public void StopSinking(PlayerControllerB player)
         {
+            Plugin.mls.LogInfo("Set local player in custom water to false!");
             isSinkingLocalPlayer = false;
-            player.sourcesCausingSinking = Mathf.Clamp(player.sourcesCausingSinking - 1, 0, 100);
             player.isMovementHindered = Mathf.Clamp(player.isMovementHindered - 1, 0, 100);
             player.hinderedMultiplier = Mathf.Clamp(player.hinderedMultiplier / movementHinderance, 1f, 100f);
             if (player.isMovementHindered == 0) player.isUnderwater = false;
