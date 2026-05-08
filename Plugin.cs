@@ -34,6 +34,8 @@ namespace Interior
 
             NetcodePatcher();
             harmony.PatchAll(typeof(CentipedePatch));
+            harmony.PatchAll(typeof(EntranceTeleportPatch));
+            harmony.PatchAll(typeof(RoundManagerPatch));
             mls.LogInfo($"{modName} Plugin loaded!");
         }
         private static void NetcodePatcher()

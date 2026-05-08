@@ -19,8 +19,46 @@
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>
 		<PackageReference Include="BepInEx.Core" Version="5.4.21" />
-		<PackageReference Include="LethalCompany.GameLibs.Steam" Version="73.0.0-ngd.0" Publicize="true" />
-		<PackageReference Include="TeamXiaolan-DawnLib" Version="0.5.3" />
+		
+		<PackageReference Include="LethalCompany.GameLibs.Steam" Version="*-*" Publicize="true" />
+		<!--<Reference Include="Assembly-CSharp" Publicize="true">
+			<HintPath>..\..\..\..\..\Steam\steamapps\common\Lethal Company\Lethal Company_Data\Managed\Assembly-CSharp.dll</HintPath>
+		</Reference>
+		<Reference Include="DunGen">
+			<HintPath>..\..\..\..\..\Steam\steamapps\common\Lethal Company\Lethal Company_Data\Managed\DunGen.dll</HintPath>
+		</Reference>
+		<Reference Include="DunGen.Integration.ASPP">
+			<HintPath>..\..\..\..\..\Steam\steamapps\common\Lethal Company\Lethal Company_Data\Managed\DunGen.Integration.ASPP.dll</HintPath>
+		</Reference>
+		<Reference Include="DunGen.Integration.UnityNav">
+			<HintPath>..\..\..\..\..\Steam\steamapps\common\Lethal Company\Lethal Company_Data\Managed\DunGen.Integration.UnityNav.dll</HintPath>
+		</Reference>
+		<Reference Include="Unity.Netcode.Components">
+		  <HintPath>..\..\..\..\..\Steam\steamapps\common\Lethal Company\Lethal Company_Data\Managed\Unity.Netcode.Components.dll</HintPath>
+		</Reference>
+		<Reference Include="Unity.Netcode.Runtime">
+		  <HintPath>..\..\..\..\..\Steam\steamapps\common\Lethal Company\Lethal Company_Data\Managed\Unity.Netcode.Runtime.dll</HintPath>
+		</Reference>
+		<Reference Include="UnityEngine">
+		  <HintPath>..\..\..\..\..\Steam\steamapps\common\Lethal Company\Lethal Company_Data\Managed\UnityEngine.dll</HintPath>
+		</Reference>
+		<Reference Include="UnityEngine.AnimationModule">
+		  <HintPath>..\..\..\..\..\Steam\steamapps\common\Lethal Company\Lethal Company_Data\Managed\UnityEngine.AnimationModule.dll</HintPath>
+		</Reference>
+		<Reference Include="UnityEngine.AssetBundleModule">
+		  <HintPath>..\..\..\..\..\Steam\steamapps\common\Lethal Company\Lethal Company_Data\Managed\UnityEngine.AssetBundleModule.dll</HintPath>
+		</Reference>
+		<Reference Include="UnityEngine.AudioModule">
+		  <HintPath>..\..\..\..\..\Steam\steamapps\common\Lethal Company\Lethal Company_Data\Managed\UnityEngine.AudioModule.dll</HintPath>
+		</Reference>
+		<Reference Include="UnityEngine.CoreModule">
+		  <HintPath>..\..\..\..\..\Steam\steamapps\common\Lethal Company\Lethal Company_Data\Managed\UnityEngine.CoreModule.dll</HintPath>
+		</Reference>
+		<Reference Include="UnityEngine.PhysicsModule">
+		  <HintPath>..\..\..\..\..\Steam\steamapps\common\Lethal Company\Lethal Company_Data\Managed\UnityEngine.PhysicsModule.dll</HintPath>
+		</Reference>-->
+		
+		<PackageReference Include="TeamXiaolan-DawnLib" Version="*" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -28,7 +66,7 @@
 	</ItemGroup>
 
 	<Target Name="NetcodePatch" AfterTargets="PostBuildEvent">
-		<Exec Command="netcode-patch -uv 2022.3.62 -nv 1.12.0 -tv 1.0.0 &quot;$(TargetPath)&quot; @(ReferencePathWithRefAssemblies->'&quot;%(Identity)&quot;', ' ')" />
+		<Exec Command="netcode-patch -uv 2022.3.62 -nv 1.12.2 -tv 1.0.0 &quot;$(TargetPath)&quot; @(ReferencePathWithRefAssemblies->'&quot;%(Identity)&quot;', ' ')" />
 	</Target>
 
 </Project>

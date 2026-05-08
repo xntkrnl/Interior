@@ -11,9 +11,9 @@ namespace Interior.Scripts
         {
             foreach (Doorway doorway in doorways)
             {
-                if (doorway == null || doorway.connectedDoorway == null) continue;
+                if (doorway == null || doorway.ConnectedDoorway == null) continue;
 
-                if (doorway.tile.placement.tileSet == doorway.connectedDoorway.tile.placement.tileSet || !HabitatConfig.Instance.habitatAssets.GetConfig<bool>("Enable forcefields").Value)
+                if (doorway.Tile.Placement.TileSet == doorway.ConnectedDoorway.Tile.Placement.TileSet || !HabitatContentHandler.Instance.habitatAssets.GetConfig<bool>("Enable forcefields").Value)
                     Destroy(doorway.ConnectorSceneObjects[0]);
             }
         }

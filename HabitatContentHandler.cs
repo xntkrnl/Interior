@@ -7,20 +7,20 @@ using System.Text;
 
 namespace Interior
 {
-    internal class HabitatConfig : ContentHandler<HabitatConfig>
+    internal class HabitatContentHandler : ContentHandler<HabitatContentHandler>
     {
         //internal static ConfigEntry<float> lampChance;
         //internal static ConfigEntry<bool> enableForceField;
         //internal static ConfigEntry<bool> enableApparatusMachineSequence;
         //internal static ConfigEntry<bool> enableThreatScannerDoors; //future use
 
-        internal HabitatAssets habitatAssets;
-        internal HabitatApparatusAssets apparatusAssets;
+        internal HabitatAssets? habitatAssets;
+        internal HabitatApparatusAssets? apparatusAssets;
 
         public class HabitatAssets(DuskMod mod, string filePath) : AssetBundleLoader<HabitatAssets>(mod, filePath) { }
         public class HabitatApparatusAssets(DuskMod mod, string filePath) : AssetBundleLoader<HabitatApparatusAssets>(mod, filePath) { }
 
-        public HabitatConfig(DuskMod mod) : base(mod)
+        public HabitatContentHandler(DuskMod mod) : base(mod)
         {
             RegisterContent("habitat_dungeondef", out habitatAssets);
             RegisterContent("habitat_apparatusdef", out apparatusAssets);
