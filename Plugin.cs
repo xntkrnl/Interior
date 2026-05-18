@@ -20,7 +20,7 @@ namespace Interior
         public static Plugin Instance = null!;
         internal static ManualLogSource mls = null!;
         internal static readonly Harmony harmony = new Harmony(modGUID);
-        internal static DuskMod mod;
+        internal static DuskMod mod = null!;
 
         private void Awake()
         {
@@ -32,27 +32,10 @@ namespace Interior
             mod = DuskMod.RegisterMod(this, mainBundle);
             mod.RegisterContentHandlers();
 
-            NetcodePatcher();
             harmony.PatchAll(typeof(CentipedePatch));
             harmony.PatchAll(typeof(EntranceTeleportPatch));
             harmony.PatchAll(typeof(RoundManagerPatch));
             mls.LogInfo($"{modName} Plugin loaded!");
-        }
-        private static void NetcodePatcher()
-        {
-            var types = Assembly.GetExecutingAssembly().GetTypes();
-            foreach (var type in types)
-            {
-                var methods = type.GetMethods(BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static);
-                foreach (var method in methods)
-                {
-                    var attributes = method.GetCustomAttributes(typeof(RuntimeInitializeOnLoadMethodAttribute), false);
-                    if (attributes.Length > 0)
-                    {
-                        method.Invoke(null, null);
-                    }
-                }
-            }
         }
     }
 }
