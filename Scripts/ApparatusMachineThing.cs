@@ -26,6 +26,7 @@ namespace Interior.Scripts
 
         IEnumerator WaitUntilLanding()
         {
+            //i dont remember why this waiting exist nor why is it trying to check if its true because its true until ship starting landing
             yield return new WaitUntil(() => StartOfRound.Instance.inShipPhase == true);
 
             lungProp = GameObject.FindObjectsOfType<LungPropExtension>().FirstOrDefault(lp => Vector3.Distance(this.transform.position, lp.transform.position) <= 20f);

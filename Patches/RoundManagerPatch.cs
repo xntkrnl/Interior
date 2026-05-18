@@ -1,12 +1,9 @@
 ﻿using HarmonyLib;
 using Interior.Scripts;
-using System;
 using System.Collections.Generic;
 using System.Reflection.Emit;
-using System.Text;
 using Unity.Netcode;
 using UnityEngine;
-using UnityEngine.Events;
 
 namespace Interior.Patches
 {
