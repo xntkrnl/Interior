@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.ProBuilder;
 
 namespace Interior.Scripts
 {
@@ -31,7 +32,7 @@ namespace Interior.Scripts
 
                 lightProbeUsage = UnityEngine.Rendering.LightProbeUsage.BlendProbes,
                 receiveShadows = true,
-                shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.On
+                shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off
             };
 
             if (!spawnManually)
@@ -123,7 +124,7 @@ namespace Interior.Scripts
                     Vector3 chunkPosition = firstChunkCenter + new Vector3(l * cellSize, 0f, m * cellSize);
                     ChunkPositions.Add(chunkPosition);
 
-                    ChunkBounds.Add(new Bounds(chunkPosition, new Vector3(cellSize, 500f, cellSize)));
+                    ChunkBounds.Add(new Bounds(chunkPosition, new Vector3(cellSize, 50f, cellSize)));
                 }
             }
 
@@ -157,37 +158,32 @@ namespace Interior.Scripts
         private new void RenderBatches()
         {
             camera = ((StartOfRound.Instance == null) || (StartOfRound.Instance.activeCamera == null)) ? Camera.main : StartOfRound.Instance.activeCamera;
-
             if (!camera) return;
+
+            Plane[] planes = GeometryUtility.CalculateFrustumPlanes(camera);
+            float maxDistSqr = chunkDrawDistance * chunkDrawDistance;
 
             for (int i = 0; i < Batches.Count && i < ChunkPositions.Count; i++)
             {
                 var batch = Batches[i];
 
-                //Debug.Log($"batch size: {batch.Count}");
-                //Debug.Log(mesh);
-                //Debug.Log(terrainMesh);
-
                 if (batch == null || batch.Count == 0) continue;
 
                 Vector3 chunkCenter = ChunkPositions[i];
-                Vector3 flatCamPos = new Vector3(camera.transform.position.x, chunkCenter.y, camera.transform.position.z);
+                //Vector3 flatCamPos = new Vector3(camera.transform.position.x, chunkCenter.y, camera.transform.position.z);
 
-                float dist = Vector3.Distance(flatCamPos, chunkCenter);
+                Vector3 delta = new Vector3(camera.transform.position.x - chunkCenter.x, 0f, camera.transform.position.z - chunkCenter.z);
 
-                //Debug.DrawLine(chunkCenter, chunkCenter + Vector3.up * 10f, dist > chunkDrawDistance? Color.yellow : Color.green);
+                if (delta.sqrMagnitude > maxDistSqr)
+                    continue;
 
-                if (dist > chunkDrawDistance)
+                if (!GeometryUtility.TestPlanesAABB(planes, ChunkBounds[i]))
                     continue;
 
                 renderParams.worldBounds = ChunkBounds[i];
 
                 for (int sub = 0; sub < mesh.subMeshCount; sub++)
-                {
                     Graphics.RenderMeshInstanced(renderParams, mesh, sub, batch);
-                    //foreach (var grassMatrix in batch)
-                    //    Debug.DrawLine(grassMatrix.GetPosition(), grassMatrix.GetPosition() + Vector3.up * 10f, Color.blue);
-                }
             }
         }
     }

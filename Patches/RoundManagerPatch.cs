@@ -9,12 +9,11 @@ namespace Interior.Patches
 {
     internal class RoundManagerPatch
     {
-        //internal static UnityEvent OnAfterSetPowerOffAtStart = new();
-
-        [HarmonyPostfix, HarmonyPatch(typeof(RoundManager), nameof(RoundManager.SetPowerOffAtStart))]
-        static void SetPowerOffAtStartPatch()
+        [HarmonyPostfix, HarmonyPatch(typeof(RoundManager), nameof(RoundManager.TurnOnAllLights))]
+        static void TurnOnAllLightsPatch(bool on)
         {
-            //OnAfterSetPowerOffAtStart.Invoke();
+            if (!on) return;
+
             foreach (var lamp in LampsRandomizer.lamps)
                 lamp.SetLampState();
             //i wish there was a better solution that i could think of
